@@ -21,10 +21,10 @@ You can also specify the amount of memory or number of CPUs you would like to us
 $ TIMESHEET_DEV_BOX_RAM=4096 TIMESHEET_DEV_BOX_CPUS=1 vagrant up
 ```
 
-## Mount Project Files
-
-## Run Projects
+## Initialise timesheet_approval
 
 ```
-vagrant ssh
+$ vagrant ssh
+$ cd /vagrant/timesheet_approval
+$ bundle install
 ```

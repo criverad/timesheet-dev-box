@@ -34,28 +34,20 @@ apt-add-repository -y ppa:brightbox/ruby-ng >/dev/null 2>&1
 add-apt-repository -y ppa:webupd8team/java >/dev/null 2>&1
 apt-get -y update >/dev/null 2>&1
 
+# install 'development tools' build-essential
 install 'development tools' build-essential
 
-install Ruby ruby2.2 ruby2.2-dev
-update-alternatives --set ruby /usr/bin/ruby2.2 >/dev/null 2>&1
-update-alternatives --set gem /usr/bin/gem2.2 >/dev/null 2>&1
+install Ruby ruby1.9.1 ruby1.9.1-dev
+update-alternatives --set ruby /usr/bin/ruby1.9.1 >/dev/null 2>&1
+update-alternatives --set gem /usr/bin/gem1.9.1 >/dev/null 2>&1
 
 echo installing current RubyGems
-gem update --system -N >/dev/null 2>&1
+gem update --system >/dev/null 2>&1
 
 echo installing Bundler
-gem install bundler -N >/dev/null 2>&1
+gem install bundler >/dev/null 2>&1
 
 install Git git
-# install SQLite sqlite3 libsqlite3-dev
-# install memcached memcached
-# install Redis redis-server
-# install RabbitMQ rabbitmq-server
-
-# install PostgreSQL postgresql postgresql-contrib libpq-dev
-# sudo -u postgres createuser --superuser vagrant
-# sudo -u postgres createdb -O vagrant activerecord_unittest
-# sudo -u postgres createdb -O vagrant activerecord_unittest2
 
 debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
 debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
@@ -65,18 +57,17 @@ MYSQL_PWD=root mysql -uroot <<SQL
 GRANT ALL ON dius_timesheet.* to 'dius_timesheet'@'localhost' IDENTIFIED BY 'dius_timesheet';
 SQL
 
-# install 'Nokogiri dependencies' libxml2 libxml2-dev libxslt1-dev
-# install 'Blade dependencies' libncurses5-dev
-# install 'ExecJS runtime' nodejs
+install 'ExecJS runtime' nodejs
 
 # Installing Java 7 (what a drag):
 wget -q http://ftp.osuosl.org/pub/funtoo/distfiles/oracle-java/jdk-7u80-linux-x64.tar.gz
 JVM_DIR=/usr/lib/jvm
 mkdir -p $JVM_DIR
-tar xvf ./jdk-7u80-linux-x64.tar.gz -C $JVM_DIR
+tar xf ./jdk-7u80-linux-x64.tar.gz -C $JVM_DIR
 JAVA_DIR=$JVM_DIR/jdk1.7.0_80
 update-alternatives --install /usr/bin/java java $JAVA_DIR/bin/java 1
 update-alternatives --install /usr/bin/javac javac $JAVA_DIR/bin/javac 1
+echo "export JAVA_HOME=$JAVA_DIR" >> /home/vagrant/.bashrc
 
 # Ready to install rails
 echo installing Rails
